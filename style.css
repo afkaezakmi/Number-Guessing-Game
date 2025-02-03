@@ -1,0 +1,110 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+    text-decoration: none;
+}
+
+.parent-container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.instruction-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: auto;
+    width: 25%;
+    background-color: red;
+    gap: 10px
+}
+
+#instructionbtn {
+    width: 45%;
+    height: 7%;
+    border-radius: 10px;
+    background-color: rgb(5, 247, 255);
+}
+
+#instructionbtn:hover{
+    background-color: rgb(2, 197, 197);
+    cursor: pointer;
+}
+
+.center-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.content-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 35%;
+    background-color: aqua;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+#playbtn {
+    width: 35%;
+    height: 15%;
+    border-radius: 8px;
+    background-color: rgb(10, 255, 10);
+}
+
+#playbtn:hover{
+    background-color: rgb(1, 197, 21);
+    cursor: pointer;
+    
+}
+
+.history-container{
+    justify-items: center;
+    margin-left: auto;
+    background-color: yellow;
+    width: 25%;
+    padding-top:10px;
+}
+
+.userField{
+    width: 50%;
+    height: 40px;
+    border-radius: 5px;
+    font-size: larger;
+}
+
+.submitButton{
+    width: 25%;
+    height: 13%;
+    border-radius: 5px;
+    background-color: lime;
+    font-size: large;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.submitButton:hover {
+    background-color: limegreen;
+    cursor: pointer;
+}
+
+.h1Text {
+    position: absolute;
+    top: 25px;
+}
+
+.optionContainer {
+    width: 100px;
+    height: 30px;
+    font-size: larger;
+    border-radius: 5px;
+    background-color: rgb(218, 215, 218);
+}
