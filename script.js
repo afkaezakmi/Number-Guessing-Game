@@ -176,7 +176,7 @@ const selectBtnHandler = (username, selectedRange) => {
 
     guessField.addEventListener('input', updateSubmitButton(guessField, enterButton));
     enterButton.addEventListener('click', () => {
-        processGame(guessField.value, guessField, randomNumber, resultText, numButton, backspace, enterButton, selectedRange, username, buttonDiv);
+        processGame(guessField.value, guessField, randomNumber, resultText, numButton, backspace, enterButton, selectedRange, username, buttonDiv, welcomeText, rangeText, resultText);
     });
 };
 
@@ -196,7 +196,7 @@ const gameCondition = (selectedRange) => {
 
 let remainingTries;
 const remainingTriesCount = document.createElement('h3');
-const processGame = (guess, guessField, range, resultText, buttonDisabler, backspace, enterButton, rangeSelected, username, buttonDiv) => {
+const processGame = (guess, guessField, range, resultText, buttonDisabler, backspace, enterButton, rangeSelected, username, buttonDiv, welcomeText, rangeText) => {
     
     guessField.value = '';
     buttonDisabler.forEach(button => {
@@ -266,35 +266,53 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
    });
 
    playAgainButton.addEventListener('click', ()=>{
+        
+        // submitBtnHandler(username);
+        historyMaker(username, rangeSelected, range);
+        playBtnHandler();
+        remainingTriesCount.remove();
+        guessContainer.remove();
+        resultText.remove();
+        guessField.remove();
         buttonDiv.remove();
         backspace.remove();
         enterButton.remove();
         finishDiv.remove();
+        welcomeText.remove();
+        rangeText.remove();
         remainingTries = undefined;
-        submitBtnHandler(username);
-        historyMaker(username);
    });
 }
 
 const historyList = document.querySelector('.history-container');
-
 let tryCounter = 0;
-const historyMaker = (username) => {
+const historyMaker = (username, rangeSelected, range) => {
     tryCounter++;
+    
     const historyDiv = document.createElement('div');
     historyDiv.classList.add('historyDiv');
+
     const historyHead = document.createElement('h3');
     historyHead.innerText = `TRY #${tryCounter}`;
     historyHead.style.textAlign = 'center';
-    const usernameText = document.createElement('h4').innerText = `USERNAME: ${username}`;
-    historyDiv.append(historyHead, usernameText);
+
+    const usernameText = document.createElement('h4');
+    usernameText.innerText = `USERNAME: ${username}`;
+
+    const rangeText = document.createElement('h4');
+    rangeText.innerText = `RANGE: ${rangeSelected}`;
+
+    const randomNumberText = document.createElement('h4');
+    randomNumberText.innerText = `NUMBER: ${range}`;
+
+    historyDiv.append(historyHead, usernameText, rangeText, randomNumberText);
     historyList.append(historyDiv);
 
 }
 
-
+const guessContainer = document.createElement('div');
 const verdictContainer = (rangeData, winOrLose) => {
-    const guessContainer = document.createElement('div');
+    guessContainer.innerHTML = '';
     guessContainer.classList.add('guessContainer');
     const randomNumber = document.createElement('h5');
     randomNumber.innerText = `THE NUMBER IS ${rangeData}!`;
