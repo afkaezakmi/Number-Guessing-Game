@@ -73,6 +73,7 @@
     background-color: yellow;
     width: 25%;
     padding-top:10px;
+    overflow-y: auto;
 }
 
 .userField{
@@ -123,9 +124,8 @@
     grid-template-columns: repeat(3, 1fr);
     width: 40%;
     height: 30%;
-    background-color: brown;
     margin-top: 10px;
-    background-color: rgb(215, 17, 17);
+    cursor: pointer;
 }
 
 .guessContainer {
@@ -136,5 +136,42 @@
     align-items: center;
     border-radius: 3px;
     border: 2px solid black;
+    margin-bottom: 5px;
+}
+
+.finishButton {
+    width: 50%;
+    height: 40%;
+    background-color: lime;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.rangeText {
+    width: 35%;
+    height: 13%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    border: 2px solid black;
+    margin-bottom: 5px;
+    background-color: burlywood;
+}
+
+.finishDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    height: 13%;
+    gap: 10px;
+}
+
+.historyDiv{
+    width: 75%;
+    height: 25%;
+    background-color: red;
+    margin-top: 5px;
     margin-bottom: 5px;
 }

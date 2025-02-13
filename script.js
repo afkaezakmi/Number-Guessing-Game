@@ -65,7 +65,7 @@ const submitBtnHandler = (username) => {
     select.setAttribute('id', 'selectContainer');
     select.classList.add('optionContainer');
     let num = 50;
-    for(let i = 0; i <= 4; i++){
+    for(let i = 0; i <= 2; i++){
         const option = document.createElement('option');
         option.setAttribute('value', String(num));
         option.innerText = String(num);
@@ -100,7 +100,8 @@ const selectBtnHandler = (username, selectedRange) => {
     contentContainer.append(welcomeText);
 
     const rangeText = document.createElement('h4');
-    rangeText.innerText = 'The Max Range of you will Guess is '+selectedRange+'!';
+    rangeText.innerText = ' Max Range is '+selectedRange+'!';
+    rangeText.classList.add('rangeText');
     contentContainer.append(rangeText);
 
     const guessField = document.createElement('input');
@@ -139,73 +140,158 @@ const selectBtnHandler = (username, selectedRange) => {
     enterButton.disabled = true;
     buttonDiv.append(enterButton);
 
-    const updateSubmitButton = () => {
-        if(guessField.value.length > 0){
-        enterButton.disabled = false;
-        } else {
-            enterButton.disabled = true;
-        }
-    };
-
-    const buttonDisabler = () => {
-        const numBtnDisabler = document.querySelectorAll('.digits');
-        if(guessField.value.length >= 3){
-            numBtnDisabler.forEach(buttons => {
-                buttons.disabled = true;       
-            });
-        } else {
-            numBtnDisabler.forEach(buttons => {
-                buttons.disabled = false;       
-            });
-        }
-    }
-
+    updateSubmitButton(guessField, enterButton);
+    
     const numButton = document.querySelectorAll('.digits');
     numButton.forEach(number => {
         number.addEventListener('click', ()=> {
             const value = number.getAttribute('value');
             if(value){
                 guessField.value += value;
-                updateSubmitButton();
+                updateSubmitButton(guessField, enterButton);
                 buttonDisabler();
             }
         });
     });
 
+    const buttonDisabler = () => {
+        if(guessField.value.length >= 3){
+            numButton.forEach(buttons => {
+                buttons.disabled = true;       
+            });
+        } else {
+            numButton.forEach(buttons => {
+                buttons.disabled = false;       
+            });
+        }
+    }
+
+    
+
     backspace.addEventListener('click', () => {
     guessField.value = guessField.value.slice(0, -1);
-    updateSubmitButton();
+    updateSubmitButton(guessField, enterButton);
     buttonDisabler();
     });
 
-    guessField.addEventListener('input', updateSubmitButton);
-
+    guessField.addEventListener('input', updateSubmitButton(guessField, enterButton));
     enterButton.addEventListener('click', () => {
-        processGame(guessField.value, guessField, randomNumber, resultText);
+        processGame(guessField.value, guessField, randomNumber, resultText, numButton, backspace, enterButton, selectedRange, username, buttonDiv);
     });
-    
 };
 
 playBtn.addEventListener('click', playBtnHandler)
 
-const processGame = (guess, guessField, range, resultText) => {
+const gameCondition = (selectedRange) => {
+    let guessCounter = 0;
+    if(selectedRange == 50){
+        guessCounter = 6;
+    } else if (selectedRange == 100){
+        guessCounter = 9;
+    } else {
+        guessCounter = 11;
+    }
+    return guessCounter;
+}
+
+let remainingTries;
+const remainingTriesCount = document.createElement('h3');
+const processGame = (guess, guessField, range, resultText, buttonDisabler, backspace, enterButton, rangeSelected, username, buttonDiv) => {
+    
+    guessField.value = '';
+    buttonDisabler.forEach(button => {
+        button.disabled = false;
+    });
+
+
+    const tries = gameCondition(rangeSelected);
+    
+    if(remainingTries === undefined){
+        remainingTries = tries;
+    }
 
     let win;
+    const finishDiv = document.createElement('div');
+    finishDiv.classList.add('finishDiv');
+
+    const finishButton = document.createElement('button');
+    finishButton.innerText = 'Finish';
+    finishButton.classList.add('finishButton');
+
+    const playAgainButton = document.createElement('button');
+    playAgainButton.innerText = 'Play Again';
+    playAgainButton.classList.add('finishButton');
 
    if (guess == range){
         resultText.innerText = 'YOUR GUESS IS CORRECT!';
         win = true;
+        guessField.value = guess;
+        afterGamebuttonDisabler(buttonDisabler, backspace)
         verdictContainer(range, win);
-   } else if (guess > range) {
-        win = false;
-        resultText.innerText = `${guess} IS HIGHER`;
-   } else {
-        win = false;
-        resultText.innerText = `${guess} IS LOWER!`;
-   }
+        centerContainer.append(finishDiv);
+        finishDiv.append(finishButton);
+        finishDiv.append(playAgainButton);
 
-   guessField.value = '';
+   } else {
+    remainingTries--;
+    remainingTriesCount.innerText = `TRIES LEFT: ${remainingTries}`;
+    contentContainer.append(remainingTriesCount);
+
+    if (remainingTries == 0){
+        resultText.innerText = 'YOU DON\'T HAVE ANYMORE TRIES!';
+        centerContainer.append(finishDiv);
+        finishDiv.append(finishButton);
+        finishDiv.append(playAgainButton);
+        guessField.value = '';
+        afterGamebuttonDisabler(buttonDisabler, backspace)
+        verdictContainer(range, win);
+
+    } else {
+        if (guess > range) {
+            win = false;
+            resultText.innerText = `${guess} IS HIGHER`;
+            guessField.value = '';
+        } else {
+            win = false;
+            resultText.innerText = `${guess} IS LOWER!`;
+            guessField.value = '';
+        }
+          
+    }
+   }
+   updateSubmitButton(guessField, enterButton, win);
+
+   finishButton.addEventListener('click', () => {
+        location.reload();
+   });
+
+   playAgainButton.addEventListener('click', ()=>{
+        buttonDiv.remove();
+        backspace.remove();
+        enterButton.remove();
+        finishDiv.remove();
+        remainingTries = undefined;
+        submitBtnHandler(username);
+        historyMaker(username);
+   });
 }
+
+const historyList = document.querySelector('.history-container');
+
+let tryCounter = 0;
+const historyMaker = (username) => {
+    tryCounter++;
+    const historyDiv = document.createElement('div');
+    historyDiv.classList.add('historyDiv');
+    const historyHead = document.createElement('h3');
+    historyHead.innerText = `TRY #${tryCounter}`;
+    historyHead.style.textAlign = 'center';
+    const usernameText = document.createElement('h4').innerText = `USERNAME: ${username}`;
+    historyDiv.append(historyHead, usernameText);
+    historyList.append(historyDiv);
+
+}
+
 
 const verdictContainer = (rangeData, winOrLose) => {
     const guessContainer = document.createElement('div');
@@ -221,3 +307,23 @@ const verdictContainer = (rangeData, winOrLose) => {
         guessContainer.style.backgroundColor = 'red';
     }
 }
+
+const updateSubmitButton = (guessField, enterButton, win) => {
+    if(guessField.value.length > 0){
+        enterButton.disabled = false;
+    } else {
+        enterButton.disabled = true;
+    }
+
+    if (win) {
+        enterButton.disabled = true;
+    }
+};
+
+const afterGamebuttonDisabler = (numberButtons, backspace) => {
+    numberButtons.forEach(button => {
+        button.disabled = true;
+    });
+    backspace.disabled = true;
+}
+
