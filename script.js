@@ -268,7 +268,7 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
    playAgainButton.addEventListener('click', ()=>{
         
         // submitBtnHandler(username);
-        historyMaker(username, rangeSelected, range);
+        historyMaker(win, username, rangeSelected, range, tries, remainingTries);
         playBtnHandler();
         remainingTriesCount.remove();
         guessContainer.remove();
@@ -286,26 +286,51 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
 
 const historyList = document.querySelector('.history-container');
 let tryCounter = 0;
-const historyMaker = (username, rangeSelected, range) => {
+const historyMaker = (win, username, rangeSelected, range, tries, remainingTries) => {
     tryCounter++;
     
     const historyDiv = document.createElement('div');
     historyDiv.classList.add('historyDiv');
+    
+    let winLoseText;
+    if(win){
+        winLoseText = 'VERY GOOD!';
+    } else {
+        winLoseText = 'BETTER LUCK NEXT TIME!';
+    }
 
-    const historyHead = document.createElement('h3');
-    historyHead.innerText = `TRY #${tryCounter}`;
-    historyHead.style.textAlign = 'center';
+    const roundCounter = document.createElement('h4');
+    roundCounter.innerText = `ROUND ${tryCounter}`
+    roundCounter.style.marginBottom = '1px';
+    roundCounter.style.textAlign = 'center';
 
-    const usernameText = document.createElement('h4');
+    const usernameText = document.createElement('h5');
     usernameText.innerText = `USERNAME: ${username}`;
 
-    const rangeText = document.createElement('h4');
+    const rangeText = document.createElement('h5');
     rangeText.innerText = `RANGE: ${rangeSelected}`;
 
-    const randomNumberText = document.createElement('h4');
+    const randomNumberText = document.createElement('h5');
     randomNumberText.innerText = `NUMBER: ${range}`;
 
-    historyDiv.append(historyHead, usernameText, rangeText, randomNumberText);
+    tries = tries - 1;
+    const attemptsCounter = document.createElement('h5');
+    attemptsCounter.innerText = `ATTEMPTS: ${tries}`
+
+    const triesCounter = document.createElement('h5');
+    triesCounter.innerText = `TRIES: ${remainingTries}`;
+
+    const historyHead = document.createElement('h4');
+    historyHead.innerText = winLoseText
+    historyHead.style.marginTop = '1px';
+    historyHead.style.textAlign = 'center';
+
+    historyDiv.append(roundCounter, usernameText, rangeText, randomNumberText, attemptsCounter, triesCounter, historyHead);
+    if(win){
+        historyDiv.style.backgroundColor = 'limegreen';
+    } else {
+        historyDiv.style.backgroundColor = 'red';
+    }
     historyList.append(historyDiv);
 
 }

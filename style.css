@@ -3,6 +3,7 @@
 	padding: 0;
 	box-sizing: border-box;
     text-decoration: none;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .parent-container{
@@ -64,7 +65,6 @@
 #playbtn:hover{
     background-color: rgb(1, 197, 21);
     cursor: pointer;
-    
 }
 
 .history-container{
@@ -171,7 +171,9 @@
 .historyDiv{
     width: 75%;
     height: 25%;
-    background-color: red;
     margin-top: 5px;
     margin-bottom: 5px;
+    border-radius: 10px;
+    padding: 5px;
+    border: 3px solid black;
 }
