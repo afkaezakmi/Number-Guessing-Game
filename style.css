@@ -76,6 +76,13 @@
     overflow-y: auto;
 }
 
+.win{
+    color: green;
+}
+.lost{
+    color: red;
+}
+
 .userField{
     width: 50%;
     height: 40px;
@@ -89,7 +96,7 @@
     border-radius: 5px;
     background-color: lime;
     font-size: large;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .submitButton:hover {
@@ -145,6 +152,8 @@
     background-color: lime;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 17px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .rangeText {
@@ -170,7 +179,7 @@
 
 .historyDiv{
     width: 75%;
-    height: 25%;
+    height: 28%;
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 10px;

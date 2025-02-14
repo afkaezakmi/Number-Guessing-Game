@@ -2,6 +2,7 @@ const playBtn = document.querySelector('#playbtn');
 const contentContainer = document.querySelector('.content-container');
 const h1Text = document.querySelector('#h1Text');
 const centerContainer = document.querySelector('.center-container');
+const winLoseCounter = document.querySelector('#record');
 
 //This function will be processed once the plyBtn is clicked
 //After pressed, it will remove the first contents inside the contentContainer and new elements will be presented
@@ -196,6 +197,7 @@ const gameCondition = (selectedRange) => {
 
 let remainingTries;
 const remainingTriesCount = document.createElement('h3');
+let guessSummary = [];
 const processGame = (guess, guessField, range, resultText, buttonDisabler, backspace, enterButton, rangeSelected, username, buttonDiv, welcomeText, rangeText) => {
     
     guessField.value = '';
@@ -226,16 +228,15 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
         resultText.innerText = 'YOUR GUESS IS CORRECT!';
         win = true;
         guessField.value = guess;
+        remainingTries--;
+        // remainingTriesCount.innerText = `TRIES LEFT: ${remainingTries}`;
         afterGamebuttonDisabler(buttonDisabler, backspace)
         verdictContainer(range, win);
         centerContainer.append(finishDiv);
         finishDiv.append(finishButton);
         finishDiv.append(playAgainButton);
-
    } else {
     remainingTries--;
-    remainingTriesCount.innerText = `TRIES LEFT: ${remainingTries}`;
-    contentContainer.append(remainingTriesCount);
 
     if (remainingTries == 0){
         resultText.innerText = 'YOU DON\'T HAVE ANYMORE TRIES!';
@@ -258,7 +259,10 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
         }
           
     }
+    guessSummary.push(guess);
    }
+   remainingTriesCount.innerText = `ATTEMPTS LEFT: ${remainingTries}`;
+   contentContainer.append(remainingTriesCount);
    updateSubmitButton(guessField, enterButton, win);
 
    finishButton.addEventListener('click', () => {
@@ -266,9 +270,12 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
    });
 
    playAgainButton.addEventListener('click', ()=>{
-        
+    if (win){
+        guessSummary.push(guess);
+    }
+
         // submitBtnHandler(username);
-        historyMaker(win, username, rangeSelected, range, tries, remainingTries);
+        historyMaker(win, username, rangeSelected, range, tries, remainingTries, guessSummary);
         playBtnHandler();
         remainingTriesCount.remove();
         guessContainer.remove();
@@ -286,21 +293,36 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
 
 const historyList = document.querySelector('.history-container');
 let tryCounter = 0;
-const historyMaker = (win, username, rangeSelected, range, tries, remainingTries) => {
+let winCount = 0;
+let loseCount = 0;
+const winner = document.querySelector('#winCounter');
+const loser = document.querySelector('#loseCounter');
+const historyMaker = (win, username, rangeSelected, range, tries, remainingTries, guessSummary) => {
     tryCounter++;
     
     const historyDiv = document.createElement('div');
     historyDiv.classList.add('historyDiv');
     
     let winLoseText;
+    let winLose;
     if(win){
         winLoseText = 'VERY GOOD!';
+        winLose = 'WIN!'
+        winCount++;
     } else {
         winLoseText = 'BETTER LUCK NEXT TIME!';
+        winLose = 'LOSE!'
+        loseCount++;
     }
 
+    winner.classList.add('.win');
+    loser.classList.add('.lost');
+    winner.innerText = winCount;
+    loser.innerText = loseCount;
+    // winLoseCounter.innerText = `W:${winCount} - L:${loseCount}`;
+    // winLoseCounter
     const roundCounter = document.createElement('h4');
-    roundCounter.innerText = `ROUND ${tryCounter}`
+    roundCounter.innerText = `ROUND ${tryCounter}: ${winLose}`
     roundCounter.style.marginBottom = '1px';
     roundCounter.style.textAlign = 'center';
 
@@ -309,30 +331,34 @@ const historyMaker = (win, username, rangeSelected, range, tries, remainingTries
 
     const rangeText = document.createElement('h5');
     rangeText.innerText = `RANGE: ${rangeSelected}`;
+    
+    // tries++; enable this if want to make the number of attempts to be the actual attempts without the free one
+    const attemptsCounter = document.createElement('h5');
+    attemptsCounter.innerText = `NO. OF ATTEMPTS: ${tries}`
 
     const randomNumberText = document.createElement('h5');
     randomNumberText.innerText = `NUMBER: ${range}`;
 
-    tries = tries - 1;
-    const attemptsCounter = document.createElement('h5');
-    attemptsCounter.innerText = `ATTEMPTS: ${tries}`
-
+    const summaryJoin = guessSummary.join(', ');
+    const guessSummaryText = document.createElement('h5');
+    guessSummaryText.innerText = `GUESSES: ${summaryJoin}`;
+    
     const triesCounter = document.createElement('h5');
-    triesCounter.innerText = `TRIES: ${remainingTries}`;
+    triesCounter.innerText = `ATTEMPTS LEFT: ${remainingTries}`;
 
     const historyHead = document.createElement('h4');
     historyHead.innerText = winLoseText
     historyHead.style.marginTop = '1px';
     historyHead.style.textAlign = 'center';
 
-    historyDiv.append(roundCounter, usernameText, rangeText, randomNumberText, attemptsCounter, triesCounter, historyHead);
+    historyDiv.append(roundCounter, usernameText, rangeText, attemptsCounter, randomNumberText, guessSummaryText, triesCounter, historyHead);
     if(win){
         historyDiv.style.backgroundColor = 'limegreen';
     } else {
         historyDiv.style.backgroundColor = 'red';
     }
     historyList.append(historyDiv);
-
+    guessSummary.length = 0;
 }
 
 const guessContainer = document.createElement('div');
