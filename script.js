@@ -272,8 +272,15 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
    playAgainButton.addEventListener('click', ()=>{
     if (win){
         guessSummary.push(guess);
+        setTimeout(()=>{
+            historyList.style.backgroundColor = 'green';
+        }, .5000);
+    } else {
+        setTimeout(()=>{
+            historyList.style.backgroundColor = '#990000';
+        }, .5000);
     }
-
+    // #990000
         // submitBtnHandler(username);
         historyMaker(win, username, rangeSelected, range, tries, remainingTries, guessSummary);
         playBtnHandler();
@@ -309,12 +316,16 @@ const historyMaker = (win, username, rangeSelected, range, tries, remainingTries
         winLoseText = 'VERY GOOD!';
         winLose = 'WIN!'
         winCount++;
+       
+        
     } else {
         winLoseText = 'BETTER LUCK NEXT TIME!';
         winLose = 'LOSE!'
         loseCount++;
+        
     }
 
+    
     winner.classList.add('.win');
     loser.classList.add('.lost');
     winner.innerText = winCount;
@@ -354,8 +365,14 @@ const historyMaker = (win, username, rangeSelected, range, tries, remainingTries
     historyDiv.append(roundCounter, usernameText, rangeText, attemptsCounter, randomNumberText, guessSummaryText, triesCounter, historyHead);
     if(win){
         historyDiv.style.backgroundColor = 'limegreen';
+        setTimeout(() => {
+            historyDiv.classList.add('active');
+        }, .5000);
     } else {
-        historyDiv.style.backgroundColor = 'red';
+        historyDiv.style.backgroundColor = 'rgb(227, 60, 60)';
+        setTimeout(() => {
+            historyDiv.classList.add('active');
+        }, .5000);
     }
     historyList.append(historyDiv);
     guessSummary.length = 0;
