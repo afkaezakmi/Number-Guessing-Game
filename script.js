@@ -363,6 +363,7 @@ const historyMaker = (win, username, rangeSelected, range, tries, remainingTries
     historyHead.style.textAlign = 'center';
 
     historyDiv.append(roundCounter, usernameText, rangeText, attemptsCounter, randomNumberText, guessSummaryText, triesCounter, historyHead);
+
     if(win){
         historyDiv.style.backgroundColor = 'limegreen';
         setTimeout(() => {
@@ -413,3 +414,16 @@ const afterGamebuttonDisabler = (numberButtons, backspace) => {
     backspace.disabled = true;
 }
 
+
+const instructionContainer = document.querySelector('.instruction-container');
+const instructionButton = document.querySelector('#instructionbtn');
+
+instructionButton.addEventListener('mouseover', ()=>{
+    setTimeout(() =>{
+        instructionContainer.classList.add('instruction-container-hover');
+    }, .3000);
+})
+
+instructionButton.addEventListener('mouseout', () => {
+    instructionContainer.classList.remove('instruction-container-hover');
+});
