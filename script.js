@@ -4,6 +4,8 @@ const h1Text = document.querySelector('#h1Text');
 const centerContainer = document.querySelector('.center-container');
 const winLoseCounter = document.querySelector('#record');
 
+
+
 //This function will be processed once the plyBtn is clicked
 //After pressed, it will remove the first contents inside the contentContainer and new elements will be presented
 const playBtnHandler = () => {
@@ -274,10 +276,12 @@ const processGame = (guess, guessField, range, resultText, buttonDisabler, backs
         guessSummary.push(guess);
         setTimeout(()=>{
             historyList.style.backgroundColor = 'green';
+            instructionContainer.style.backgroundColor = 'green';
         }, .5000);
     } else {
         setTimeout(()=>{
             historyList.style.backgroundColor = '#990000';
+            instructionContainer.style.backgroundColor = '#990000';
         }, .5000);
     }
     // #990000
@@ -427,3 +431,14 @@ instructionButton.addEventListener('mouseover', ()=>{
 instructionButton.addEventListener('mouseout', () => {
     instructionContainer.classList.remove('instruction-container-hover');
 });
+
+if (win){
+    guessSummary.push(guess);
+    setTimeout(()=>{
+        instructionContainer.style.backgroundColor = 'green';
+    }, .5000);
+} else {
+    setTimeout(()=>{
+        instructionContainer.style.backgroundColor = '#990000';
+    }, .5000);
+}
