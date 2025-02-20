@@ -20,7 +20,7 @@
     align-items: center;
     margin-right: auto;
     width: 25%;
-    background-color: black;
+    background-color:#FFA559;
     color: white;
     gap: 10px;
     transition: background-color 1s ease;
@@ -33,7 +33,7 @@
     border-radius: 10px;
     background-color: rgb(5, 247, 255);
 }
-
+/* #B7E4C7 */
 #instructionbtn:hover{
     background-color: rgb(2, 197, 197);
     cursor: pointer;
@@ -44,7 +44,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: goldenrod;
+    background-color: #FCE77D;
     width: 50%;
 }
 
@@ -55,7 +55,7 @@
     align-items: center;
     width: 70%;
     height: 40%;
-    background-color:#1E90FF;
+    background-color:#4DA6FF;
     border-radius: 10px;
     gap: 10px;
 }
@@ -80,7 +80,7 @@
     width: 25%;
     padding-top:10px;
     overflow-y: auto;
-    background-color: black;
+    background-color: #5E60CE;
     transition: background-color 1s ease;
     color: white;
 }
